@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+cluster = {
+  "centos7-00" => { :ip => "192.168.22.200", :cpus => 1, :mem => 1024 },
+  "centos7-01" => { :ip => "192.168.22.201", :cpus => 1, :mem => 1024 },
+}
+
+Vagrant.configure("2") do |config|
+	cluster.each_with_index do |(box, info), index|
+		config.vm.define box do |node|
+			node.vm.box = box
+			node.vm.hostname = "ansible-" + box
+			node.vm.box_url = "http://vagrant/ansible/"+box
+			node.vm.network "private_network", ip: info[:ip]
+			
+			node.vm.provider :virtualbox do |v|
+				v.memory = info[:mem]
+				v.name = "ansible-" + box
+			end
+		end
+	end
+end

@@ -1,0 +1,27 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+cluster = {
+  "centos7-00" => { :ip => "192.168.22.100", :cpus => 1, :mem => 1024 },
+  "centos7-01" => { :ip => "192.168.22.101", :cpus => 1, :mem => 1024 },
+  "centos7-02" => { :ip => "192.168.22.102", :cpus => 1, :mem => 1024 },
+  "centos7-03" => { :ip => "192.168.22.103", :cpus => 1, :mem => 1024 }
+}
+
+Vagrant.configure("2") do |config|
+	cluster.each_with_index do |(box, info), index|
+		config.vm.define box do |node|
+			node.vm.box = box
+			node.vm.hostname = "hframe-" + box
+			node.vm.box_url = "http://vagrant/hframe/"+box
+			node.vm.network "private_network", ip: info[:ip]
+			
+			node.vm.provider :virtualbox do |v|
+				v.memory = info[:mem]
+				v.name = box
+			end
+		end
+	end
+end
