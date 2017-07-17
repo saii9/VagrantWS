@@ -1,0 +1,24 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+cluster = {
+  "centos700" => { :ip => "192.168.23.200", :cpus => 1, :mem => 512, :hostPrefix => "podbuild" }
+}
+
+Vagrant.configure("2") do |config|
+	cluster.each_with_index do |(box, info), index|
+		config.vm.define box do |node|
+			node.vm.box = box
+			node.vm.hostname = info[:hostPrefix] + "-" + box
+			node.vm.box_url = "http://vagrant/" + info[:hostPrefix] + "/" + box
+			node.vm.network "private_network", ip: info[:ip]
+			
+			node.vm.provider :virtualbox do |v|
+				v.memory = info[:mem]
+				v.name = info[:hostPrefix] + "-" + box
+			end
+		end
+	end
+end
