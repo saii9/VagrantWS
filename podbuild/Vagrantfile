@@ -4,7 +4,7 @@
 VAGRANTFILE_API_VERSION = "2"
 
 cluster = {
-  "centos700" => { :ip => "192.168.23.200", :cpus => 1, :mem => 512, :hostPrefix => "podbuild" }
+  "centos700" => { :ip => "	", :cpus => 1, :mem => 512, :hostPrefix => "podbuild" }
 }
 
 Vagrant.configure("2") do |config|
