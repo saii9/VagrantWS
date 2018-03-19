@@ -1,24 +1,17 @@
-# -*- mode: ruby -*-
+	# -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-VAGRANTFILE_API_VERSION = "2"
-
+require_relative '../Instruct.rb'
+vagrant_api_version = 2
+project = "simbuild"
 cluster = {
-  "centos700" => { :ip => "	", :cpus => 1, :mem => 512, :hostPrefix => "podbuild" }
+	"box" => { :ip => "192.168.12.203", :mem => 1024, :box => "centos/7", :instructType => "podbuild"},
 }
 
-Vagrant.configure("2") do |config|
-	cluster.each_with_index do |(box, info), index|
-		config.vm.define box do |node|
-			node.vm.box = box
-			node.vm.hostname = info[:hostPrefix] + "-" + box
-			node.vm.box_url = "http://vagrant/" + info[:hostPrefix] + "/" + box
-			node.vm.network "private_network", ip: info[:ip]
-			
-			node.vm.provider :virtualbox do |v|
-				v.memory = info[:mem]
-				v.name = info[:hostPrefix] + "-" + box
-			end
-		end
-	end
+
+puts "variables init"
+Vagrant.configure(vagrant_api_version) do |config|
+	cluster.each_with_index do |(boxId, info), index|
+        Instruct.new.send(info[:instructType], cluster, project, boxId, config)
+	end        
 end
