@@ -70,7 +70,7 @@ class Instruct
             node.vm.network "private_network", ip: conf[:ip]
             node.vm.provision :shell, privileged: true, :path => 'install.sh'
             cluster.each_with_index do |(boxId, info), index|                    
-                node.vm.provision :shell, privileged: true, :path => '../addDNS.sh', :args => [info[:ip], boxId, info[:alias]]
+                node.vm.provision :shell, privileged: true, path: "../addDNS.sh", :args => [info[:ip], boxId, info[:alias]]
             end
             node.vm.provider :virtualbox do |v|
                 v.memory = conf[:mem]
@@ -89,7 +89,7 @@ class Instruct
             node.vm.box = conf[:box]
             node.vm.network "private_network", ip: conf[:ip]
             cluster.each_with_index do |(boxId, info), index|                    
-                node.vm.provision :shell, privileged: true, :path => 'addDNS.sh', :args => [info[:ip], boxId, info[:alias]]
+                node.vm.provision :shell, privileged: true, :path => '../addDNS.sh', :args => [info[:ip], boxId, info[:alias]]
             end
             node.vm.provider :virtualbox do |v|
                 v.memory = conf[:mem]
