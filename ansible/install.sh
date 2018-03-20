@@ -3,6 +3,10 @@
 yum install -y epel-release
 yum install -y ansible
 
-echo "" >> /etc/ansible/hosts
-echo "[target]" >> /etc/ansible/hosts
-echo "target ansible_connection=ssh ansible_user=vagrant ansible_pass=vagrant" >> /etc/ansible/hosts
+cp -r /home/vagrant/sync/.vagrant/machines /home/vagrant
+chmod 700 /home/vagrant/machines/simbuild.box/virtualbox/private_key 
+
+cat << SET >> /etc/ansible/hosts
+[target] 
+target ansible_connection=ssh ansible_user=vagrant ansible_pass=vagrant ansible_ssh_private_key_file=/home/vagrant/machines/simbuild.box/virtualbox/private_key
+SET
