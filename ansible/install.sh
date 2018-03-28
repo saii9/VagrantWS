@@ -1,9 +1,11 @@
 #!/bin/bash
-
+set -x
+set -e
 yum install -y epel-release
 yum install -y ansible
 
-cp -r /home/vagrant/sync/.vagrant/machines /home/vagrant
+sudo cp -r /home/vagrant/sync/.vagrant/machines /home/vagrant
+sudo chown -R vagrant:vagrant /home/vagrant/machines
 chmod 700 /home/vagrant/machines/Ansible.target/virtualbox/private_key 
 
 cat << SET >> /etc/ansible/hosts
