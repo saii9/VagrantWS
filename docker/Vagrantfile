@@ -1,0 +1,19 @@
+	# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+require_relative '../Instruct'
+vagrant_api_version = 2
+project = "Ansible"
+cluster = {
+	"tower" => { :ip => "192.168.12.200", :mem => 1024, :box => "centos/7", :instructType => "ansible", :alias => "ansible"},
+	"target" => { :ip => "192.168.12.201", :mem => 1024, :box => "centos/7", :instructType => "common", :alias => "testbox"}
+}
+
+
+puts "variables init"
+Vagrant.configure(vagrant_api_version) do |config|
+	cluster.each_with_index do |(boxId, info), index|
+        Instruct.new.send(info[:instructType], cluster, project, boxId, config)
+	end        
+end
