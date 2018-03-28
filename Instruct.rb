@@ -95,8 +95,10 @@ class Instruct
                 v.memory = conf[:mem]
                 v.name = boxName
             end
+			node.vm.synced_folder "D:\\", "/home/vagrant/workspace" #, disabled: true
             node.vm.synced_folder ".", "/home/vagrant/sync" #, disabled: true
-        end
+            node.vm.provision :shell, privileged: true, :path => 'install.sh'
+		end
     end
 	
 end
