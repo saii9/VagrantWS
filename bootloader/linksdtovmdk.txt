@@ -1,0 +1,30 @@
+step 1 – Get the Device ID of your SD card reader.
+On Command Line enter below command
+$] wmic diskdrive list brief
+Caption                      DeviceID            Model                        Partitions  Size
+WDC WD5000BPKT-75PK4T0       \\.\PHYSICALDRIVE0  WDC WD5000BPKT-75PK4T0       3           500105249280
+Micro SD SCSI Disk Device    \\.\PHYSICALDRIVE1  Micro SD SCSI Disk Device    1           3964584960
+So Device ID of SD Card is \\.\PHYSICALDRIVE1
+
+Step 2 – Create VMDK file
+Create the VMDK file which will link to the SD card, open a command windows as Administrator
+
+
+$] D:\Other\vagrantWS\bootloader>"C:\\Program Files\Oracle\VirtualBox\VBoxManage" internalcommands createrawvmdk -filename "sdcard.vmdk" -rawdisk "\\.\PHYSICALDRIVE1"
+RAW host disk access VMDK file sdcard.vmdk created successfully.
+
+
+Step 3 – Attach RAW Disk to VM
+Next attach the raw disk VMDK to guest VM within the VirtualBox UI
+Ensure the Guest VM is not running.
+Ensure VirtualBox is not running
+Start VirtualBox by right-clicking on it and choosing “Run as administrator”
+Open the settings area for the guest VM
+Click on “Storage” in the toolbar
+Next to the controller click on the icon to “Add Hard Disk”
+Select “Choose existing disk”
+Navigate to the c:/Hard Disks/sdcard.vmdk and select it
+You should now be returned to the Storage tab and see your sdcard.vmdk in the list.
+
+Step 4 – Start the VM
+Depending on whether you have a GUI or not the SD card may or may not automatically mount. If you need to mount is manually it is simply exposed as another standard block device, so on my guest this was exposed as /dev/sdb.
