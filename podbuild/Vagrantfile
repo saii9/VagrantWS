@@ -6,6 +6,8 @@ vagrant_api_version = 2
 project = "simbuild"
 cluster = {
 	"box" => { :ip => "192.168.12.203", :mem => 1024, :box => "centos/7", :instructType => "podbuild"},
+	"amz2" => { :ip => "192.168.12.204", :mem => 1024, :box => "winky/amazonlinux-2", :instructType => "podbuild"},
+
 }
 
 
