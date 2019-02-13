@@ -10,7 +10,8 @@ Step 2 – Create VMDK file
 Create the VMDK file which will link to the SD card, open a command windows as Administrator
 
 
-$] D:\Other\vagrantWS\bootloader>"C:\\Program Files\Oracle\VirtualBox\VBoxManage" internalcommands createrawvmdk -filename "sdcard.vmdk" -rawdisk "\\.\PHYSICALDRIVE1"
+$] vboxmanage internalcommands createrawvmdk -filename "sdcard.vmdk" -rawdisk "\\.\PHYSICALDRIVE1"
+vboxmanage closemedium disk <guid> --delete
 RAW host disk access VMDK file sdcard.vmdk created successfully.
 
 
@@ -28,3 +29,4 @@ You should now be returned to the Storage tab and see your sdcard.vmdk in the li
 
 Step 4 – Start the VM
 Depending on whether you have a GUI or not the SD card may or may not automatically mount. If you need to mount is manually it is simply exposed as another standard block device, so on my guest this was exposed as /dev/sdb.
+sudo mount -t [vfat/ntfs/msdos] /dev/sdb /sdcard
