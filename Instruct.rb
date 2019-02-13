@@ -77,6 +77,7 @@ class Instruct
 				v.name = boxName
 			end
 			node.vm.synced_folder Constants::DEPLOY_SCRIPTS_SYNC , "/home/vagrant/deployscripts" #, disabled: true
+			node.vm.synced_folder Constants::DEPLOY_SCRIPTS2_SYNC , "/home/vagrant/deployscripts2" #, disabled: true
 			node.vm.synced_folder ".", "/home/vagrant/sync" #, disabled: true
 		end
 	end

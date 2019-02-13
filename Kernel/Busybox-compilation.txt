@@ -1,0 +1,22 @@
+#in a clean working directory donwload busybox
+wget https://busybox.net/downloads/busybox-1.28.3.tar.bz2
+tar xvjf busybox-1.28.3.tar.bz2
+
+#downlaod linaro toolchain
+wget https://releases.linaro.org/components/toolchain/binaries/latest/arm-linux-gnueabihf/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
+tar xvf gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf.tar.xz
+
+#downlaod linux kernel source
+wget https://github.com/beagleboard/linux/archive/4.4.zip
+unzip 4.4.zip
+
+#add toolchain binaries to path
+PATH=$PATH:`pwd`/gcc-linaro-7.2.1-2017.11-x86_64_arm-linux-gnueabihf/bin/
+
+
+cd busybox-1.28.3
+sudo apt-get install libncurses5-dev libncursesw5-dev
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- defconfig
+#Change any default configurations
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- menuconfig
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- CONFIG_PREFIX=`pwd`/build -j8 install
