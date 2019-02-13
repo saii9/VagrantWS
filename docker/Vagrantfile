@@ -4,12 +4,10 @@
 
 require_relative '../Instruct'
 vagrant_api_version = 2
-project = "Ansible"
+project = "docker"
 cluster = {
-	"tower" => { :ip => "192.168.12.200", :mem => 1024, :box => "centos/7", :instructType => "ansible", :alias => "ansible"},
-	"target" => { :ip => "192.168.12.201", :mem => 1024, :box => "centos/7", :instructType => "common", :alias => "testbox"}
+	"unit" => { :ip => "192.168.12.221", :mem => 1024, :box => "centos/7", :instructType => "common", :alias => "docker"}
 }
-
 
 puts "variables init"
 Vagrant.configure(vagrant_api_version) do |config|
