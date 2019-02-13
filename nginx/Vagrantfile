@@ -1,71 +1,17 @@
 	# -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-# require 'yaml'
-# settings = YAML.load_file 'vagrant.yml'
-# vagrant_api_version = settings[vagrant_api_version]
-# project = settings["project"]
-# cluster = settings["cluster"]
 
+require_relative '../Instruct'
 vagrant_api_version = 2
-$project = "wt2setup"
-$cluster = {
-    "nginx" => { :ip => "192.168.12.210", :mem => 1024, :box => "centos700", :instructType => "nginx", :alias => "elb enginex"}, 
-    #"app01" => { :ip => "192.168.12.211", :mem => 1024, :box => "centos700", :alias => "app1 server1 server"},
-    #"app02" => { :ip => "192.168.12.212", :mem => 1024, :box => "centos700", :alias => "app2 server2 "}, 
-    #"stres" => { :ip => "192.168.12.213", :mem => 1024, :box => "centos700", :alias => "stress loadclient loadrunner"}
+project = "nginx"
+cluster = {
+	"1" => { :ip => "192.168.1.2", :mem => 1024, :box => "centos/7", :instructType => "common", :alias => "nginx"}
 }
-#Vagrant.actions[:start].delete(Vagrant::Action::VM::ShareFolders)
-
-class Instruct
-    def nginx(boxId, config)
-        conf= $cluster[boxId]
-        boxName = $project + "." + boxId
-        config.vm.define boxName do |node|
-            node.vm.box = conf[:box]
-            node.vm.network "private_network", ip: conf[:ip]
-            node.vm.network "forwarded_port", guest: 443, host: 4444 # HTTP
-            #node.vm.provision :shell, privileged: true, :path => 'installVboxDrivers.sh'
-			#node.vm.provision :shell, privileged: true, :path => 'install-nginx.sh'
-            $cluster.each_with_index do |(boxId, info), index|                    
-                node.vm.provision :shell, privileged: true, :path => 'addDNS.sh', :args => [info[:ip], boxId, info[:alias]]
-            end
-            node.vm.provider :virtualbox do |v|
-                v.memory = conf[:mem]
-                v.name = boxName
-            end
-            #node.vm.synced_folder ".", "/var/mount/", :nfs=>true, :disabled=>true
-			node.vm.synced_folder ".", "/home/vagrant/sync", disabled: true
-			puts boxName + "of the cluster is up"
-        end
-    end
-	
-	def appServer(boxId, config)
-        conf= $cluster[boxId]
-        boxName = $project + "." + boxId
-        config.vm.define boxName do |node|
-            node.vm.box = conf[:box]
-            node.vm.network "private_network", ip: conf[:ip]
-            node.vm.network "forwarded_port", guest: 443, host: 4444 # HTTP
-            #node.vm.provision :shell, privileged: true, :path => 'installVboxDrivers.sh'
-            $cluster.each_with_index do |(boxId, info), index|                    
-                node.vm.provision :shell, privileged: true, :path => 'addDNS.sh', :args => [info[:ip], boxId, info[:alias]]
-            end
-            node.vm.provider :virtualbox do |v|
-                v.memory = conf[:mem]
-                v.name = boxName
-            end
-            #node.vm.synced_folder ".", "/var/mount/", :nfs=>true, :disabled=>true
-			node.vm.synced_folder ".", "/home/vagrant/sync", disabled: true
-			puts boxName + "of the cluster is up"
-        end
-    end
-	
-end
 
 puts "variables init"
 Vagrant.configure(vagrant_api_version) do |config|
-	$cluster.each_with_index do |(boxId, info), index|
-        Instruct.new.send(info[:instructType], boxId, config)
+	cluster.each_with_index do |(boxId, info), index|
+        Instruct.new.send(info[:instructType], cluster, project, boxId, config)
 	end        
 end

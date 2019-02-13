@@ -1,0 +1,19 @@
+	# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+require_relative '../Instruct'
+vagrant_api_version = 2
+project = "nginxS"
+cluster = {
+	"nginx" => { :ip => "192.168.2.1", :mem => 1024, :box => "centos/7", :instructType => "common", :alias => "nginx"},
+	"app1" =>  { :ip => "192.168.2.2", :mem => 1024, :box => "centos/7", :instructType => "common", :alias => "app1"},
+	"app2" =>  { :ip => "192.168.2.3", :mem => 1024, :box => "centos/7", :instructType => "common", :alias => "app2"}
+}
+
+puts "variables init"
+Vagrant.configure(vagrant_api_version) do |config|
+	cluster.each_with_index do |(boxId, info), index|
+        Instruct.new.send(info[:instructType], cluster, project, boxId, config)
+	end        
+end
