@@ -1,0 +1,17 @@
+	# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+require_relative '../Instruct'
+vagrant_api_version = 2
+project = "testbox"
+cluster = {
+	"unit" => { :ip => "192.168.13.221", :mem => 1024, :box => "winky/amazonlinux-2", :instructType => "common", :alias => "test"}
+}
+
+puts "variables init"
+Vagrant.configure(vagrant_api_version) do |config|
+	cluster.each_with_index do |(boxId, info), index|
+        Instruct.new.send(info[:instructType], cluster, project, boxId, config)
+	end        
+end

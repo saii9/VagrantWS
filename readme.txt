@@ -1,6 +1,12 @@
 author : sundeepi9@yahoo.in
 this will have the vagrant workspace projects across all my systems
 
+install vbox file systems
+--------------------------------------------------------------
+vagrant plugin install vagrant-vbguest
+vagrant vbguest
+
+
 RSYNC issues
 -------------------------------------------------------------------------------------------------------------START
 Check the box synced_folder at C:\Users[username]\.vagrant.d\boxes\centos-VAGRANTSLASH-7\1602.02\virtualbox\Vagrantfile
