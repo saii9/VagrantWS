@@ -1,0 +1,3 @@
+CFLAGS='-static -static-libgcc -static-libstdc++'
+CXXFLAGS='-fPIC -static'
+LDFLAGS='-static -static-libgcc -static-libstdc++'
