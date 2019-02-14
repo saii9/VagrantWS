@@ -33,11 +33,11 @@ class ARGS():
     match=""
     build=""
     debug=True
-    aws_access_key_id="AKIAJYCCHLBOJVTDQZMA"
-    aws_secret_access_key="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"
+    aws_access_key_id=""
+    aws_secret_access_key=""
     aws_region="us-east-1"
     save_dir="sharedArtifacts"
-    base="https://bamboo.dev.fcawitech.com"
+    base=""
 
 args=ARGS()
 debug_messages = []
