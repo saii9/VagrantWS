@@ -1,0 +1,38 @@
+	# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+vagrant_api_version = 2
+project = "load_balencer_test"
+cluster = {
+	"rproxy" => { :ip => "192.168.12.200"},
+	"node1" => { :ip => "192.168.12.202"},
+	"node2" => { :ip => "192.168.12.203"},
+	"node3" => { :ip => "192.168.12.204"},
+	"node4" => { :ip => "192.168.12.205"}
+}
+
+
+# puts "variables init"
+Vagrant.configure(vagrant_api_version) do |config|
+	# conf= cluster[boxId]
+	boxName = project + "." + "rproxy"
+	FileUtils.touch(boxName)
+	config.vm.define boxName do |node|
+		node.vm.box = "centos/7"
+		node.vm.network "private_network", ip: "192.168.12.200"
+		# cluster.each_with_index do |(boxId, info), index|
+		# 	node.vm.provision :shell, privileged: true, :path => '../addDNS.sh', :args => [info[:ip], boxId, info[:alias]]
+		# end
+		node.vm.provider :virtualbox do |v|
+			# v.customize ["modifyvm", :id, "--usb", "on"]
+			# v.customize ["modifyvm", :id, "--usbehci", "on"]
+
+			v.memory = 1024
+			v.name = boxName
+		end
+		node.vm.synced_folder ".", "/home/vagrant/sync" #, disabled: true
+		# node.vm.provision :shell, privileged: true, :path => 'install.sh'
+	end
+	
+end
